@@ -99,3 +99,35 @@ module.exports.deleteWorkout = (req, res) =>{
         .catch(err => errorHandler(err, req, res));
 }
 
+module.exports.completeWorkoutStatus = (req, res) => {
+    return Workout.findById(req.params.id)
+        .then(result => {
+
+            if(!result){
+                return res.status(404).send({
+                    message: 'Workout not Found'
+                })
+            } else {
+
+                result.status = req.body.status || result.status;
+               
+
+                return result.save();
+            }
+
+        }).then(updatedWorkout => {
+            return res.status(200).send({
+                message:'Workout updated successfully',
+                updatedWorkout: {
+                    _id:updatedWorkout._id,
+                    userId:updatedWorkout.userId,
+                    name: updatedWorkout.name,
+                    duration:updatedWorkout.duration,
+                    status: updatedWorkout.status,
+                    dateAdded:updatedWorkout.dateAdded,
+                    __v: updatedWorkout.__v
+                }
+            })
+        })
+        .catch(err => errorHandler(err, req, res));
+}
