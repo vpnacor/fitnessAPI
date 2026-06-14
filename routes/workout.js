@@ -1,0 +1,13 @@
+const express = require('express');
+const router = express.Router();
+const {verify} = require('../auth');
+const workoutController = require('../controllers/workout')
+
+router.post('/addWorkout', verify, workoutController.addWorkout)
+router.get('/getMyWorkouts', verify, workoutController.getMyWorkout)
+router.patch('/updateWorkout/:id', verify, workoutController.updateWorkout)
+router.delete('/deleteWorkout/:id', verify, workoutController.deleteWorkout)
+
+
+module.exports = router;
+
